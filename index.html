@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>EdoardoFlix</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@growthbunker/vueflags@latest/dist/vueflags.min.js"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="root" class="container">
+        <header>
+            <nav>
+                <img class="logo" src="img/flags/logo.png" alt="">
+                <div class="left-nav">
+                    
+                    <ul class="left-list">
+                        <li></li>
+                        <li>Home</li>
+                        <li>Serie Tv</li>
+                        <li>Film</li>
+                        <li>Nuovi e popolari</li>
+                        <li>La mia lista</li>
+                    </ul>
+                </div>
+
+                <div class="right-nav">
+                    <ul class="right-list">
+                        <li>
+                            <input class="search" @keyup.enter="searchMovie(); searchSerie()" 
+                            v-model="searchQuery" type="text" placeholder="Search Movie or Tv Show">
+                        </li>
+                    </ul>                    
+                </div>                
+            </nav>
+        </header>
+
+        <!-- inizio del main -->
+        <div class="main-container">
+
+            <!-- MOVIES -->                      
+            <div v-for="movie in moviesDB" class="movie-container">
+                <img v-if="movie.poster_path" class="poster" 
+                :src="'https://image.tmdb.org/t/p/w500/' + movie.poster_path" alt="">
+                <img v-else class="poster" src="img/flags/wantyou.jpg" alt="">
+                <ul class="info">
+                    <li>
+                        <h3>Titolo</h3>
+                        <span>{{movie.title}}</span>
+                    </li>
+                    <li>
+                        <h3>Titolo Originale</h3>
+                        <span>{{movie.original_title}}</span>
+                    </li>
+                    <li>
+                        <h3>Lingua</h3>
+                        <img v-if="flagsImg.includes(movie.original_language)" class="flag" 
+                        :src="'img/flags/' + movie.original_language + '.svg'" alt="">
+                        <span v-else>{{movie.original_language}}</span>
+                    </li>                        
+                    <li>
+                        <h3>Voto</h3><span><i  v-for = "(stars, index) in 5" 
+                        :class="ratingStar(movie, index)" class="fas fa-star"></i></span>
+                    </li>
+                </ul>
+            </div>
+            <!-- END MOVIES -->
+            
+            <!-- SERIES --> 
+            <div v-for="(serie,index) in serieDB" class="movie-container">                
+                <ul>
+                    <li>
+                        <img  v-if="serie.poster_path"class="poster" 
+                        :src="'https://image.tmdb.org/t/p/w500/' + serie.poster_path" alt="">
+                        <img v-else class="poster" src="img/flags/wantyou.jpg" alt="">
+                    </li>
+                    <li>
+                        <h3>Titolo</h3>
+                        <span>{{serie.name}}</span>
+                    </li>
+                    <li>
+                        <h3>Titolo Originale</h3>
+                        <span>{{serie.original_name}}</span>
+                    </li>
+                    <li>
+                        <h3>Lingua</h3>
+                        <img v-if="flagsImg.includes(serie.original_language)" class="flag" 
+                        :src="'img/flags/' + serie.original_language + '.svg'" alt="">
+                        <span v-else>{{serie.original_language}}</span>
+                    </li>                        
+                    <li>
+                        <h3>Voto</h3><span><i  v-for = "(stars, index) in 5" 
+                        :class="ratingStar(serie, index)" class="fas fa-star"></i></span>
+                    </li>
+                </ul>
+            </div>         
+            <!-- END SERIES  -->    
+
+        </div>
+    </div>
+
+
+
+    <script src="js/script.js" charset="utf-8"></script>
+</body>
+
+</html>
+
